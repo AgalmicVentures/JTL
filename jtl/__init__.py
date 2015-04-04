@@ -3,11 +3,19 @@
 import json
 import sys
 
-def transform(data, transform):
-	#TODO
-	return data
+def parseTransform(transform):
+	return [token.strip() for token in transform.split('$')]
 
-	return None
+def transform(data, transform):
+	#Parse the transformation into tokens
+	tokens = parseTransform(transform)
+	if len(tokens) == 0:
+		return None
+
+	primarySelector = tokens[0]
+	value = data.get(primarySelector)
+
+	return value #TODO: transform it too
 
 def transformJson(data, transformData):
 	result = {}
@@ -16,17 +24,19 @@ def transformJson(data, transformData):
 	return result
 
 def main():
-	#TODO: parse arguments
+	#TODO: parse arguments properly
+	transformStr = sys.argv[1]
+	transformData = json.loads(transformStr)
 
+	#Read the JSON in from stdin
+	#TODO: error handling
 	data = json.loads(sys.stdin.read())
-
-	transformData = {} #TODO
 
 	#Transform the JSON
 	result = transformJson(data, transformData)
 
 	#Output the result
-	print(json.dumps(data, indent=4, sort_keys=True))
+	print(json.dumps(result, indent=4, sort_keys=True))
 
 	return 0
 
