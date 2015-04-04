@@ -12,9 +12,27 @@ def extractSplitPath(data, splitPath):
 	nextData = data.get(splitPath[0])
 	return nextData if len(splitPath) <= 1 or nextData is None else extractSplitPath(nextData, splitPath[1:])
 
+def toBool(data):
+	return data == 'True' or data == 'true'
+
+def toFloat(data):
+	try:
+		return float(data)
+	except ValueError:
+		return None
+
+def toInt(data):
+	try:
+		return int(data)
+	except ValueError:
+		return None
+
 functions = {
 	#Any
 	'toString': lambda x: str(x),
+	'toBool': lambda x: toBool(x),
+	'toFloat': lambda x: toFloat(x),
+	'toInt': lambda x: toInt(x),
 
 	#None
 	'isNull': lambda x: x is None,
