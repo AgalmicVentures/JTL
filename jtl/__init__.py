@@ -1,10 +1,69 @@
 #!/usr/bin/env python3
 
 import json
+import math
 import sys
 
+functions = {
+	#Any
+	'toString': lambda x: str(x),
+
+	#None
+	'isNull': lambda x: x is None,
+
+	'defaultEmpty': lambda x: x if x is not None else '',
+	'defaultNan': lambda x: x if x is not None else float('nan'),
+	'defaultZero': lambda x: x if x is not None else 0,
+
+	#Bool
+	'not': lambda x: not x if x is not None else None,
+
+	#Dict
+	'keys': lambda d: d.keys() if d is not None else None,
+	'values': lambda d: d.values() if d is not None else None,
+
+	#Float
+	'isNan': lambda x: math.isnan(x) if x is not None else None,
+
+	#Int
+	'isZero': lambda x: x == 0 if x is not None else None,
+
+	#Sequence
+	'length': lambda s: len(s) if s is not None else 0,
+
+	'first': lambda s: s[0] if s is not None and len(s) > 1 else None,
+	'rest': lambda s: s[1:] if s is not None and len(s) > 1 else None,
+	'last': lambda s: s[-1] if s is not None and len(s) > 1 else None,
+	'init': lambda s: s[:-1] if s is not None and len(s) > 1 else None,
+
+	'sum': lambda s: sum(s) if s is not None else 0,
+
+	#String
+	'lower': lambda s: s.lower() if s is not None else 0,
+	'upper': lambda s: s.upper() if s is not None else 0,
+	'capitalize': lambda s: s.capitalize() if s is not None else 0,
+
+	'strip': lambda s: s.strip() if s is not None else 0,
+
+	'join': lambda s: ''.join(s) if s is not None else None,
+	'lines': lambda s: s.split('\n') if s is not None else None,
+	'unlines': lambda s: '\n'.join(s) if s is not None else None,
+	'words': lambda s: s.split(' ') if s is not None else None,
+	'unwords': lambda s: ' '.join(s) if s is not None else None,
+}
+
 def parseTransform(transform):
+	#TODO: more robust parsing
+	#TODO: handle arguments
 	return [token.strip() for token in transform.split('$')]
+
+def applyOperation(value, operation):
+	function = functions.get(operation)
+	if function is None:
+		#TODO: error
+		return None
+
+	return function(value)
 
 def transform(data, transform):
 	#Parse the transformation into tokens
@@ -14,6 +73,8 @@ def transform(data, transform):
 
 	primarySelector = tokens[0]
 	value = data.get(primarySelector)
+	for operation in tokens[1:]:
+		value = applyOperation(value, operation)
 
 	return value #TODO: transform it too
 
