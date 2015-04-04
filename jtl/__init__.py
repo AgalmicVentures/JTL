@@ -4,6 +4,14 @@ import json
 import math
 import sys
 
+def extractPath(data, path):
+	splitPath = path.split('.')
+	return extractSplitPath(data, splitPath)
+
+def extractSplitPath(data, splitPath):
+	nextData = data.get(splitPath[0])
+	return nextData if len(splitPath) <= 1 or nextData is None else extractSplitPath(nextData, splitPath[1:])
+
 functions = {
 	#Any
 	'toString': lambda x: str(x),
@@ -73,7 +81,7 @@ def transform(data, transform):
 		return None
 
 	primarySelector = tokens[0]
-	value = data.get(primarySelector)
+	value = extractPath(data, primarySelector)
 	for operation in tokens[1:]:
 		value = applyOperation(value, operation)
 
