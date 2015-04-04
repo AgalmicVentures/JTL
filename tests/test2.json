@@ -1,0 +1,30 @@
+{
+    "IATA": "IAD",
+    "ICAO": "KIAD",
+    "city": "Washington",
+    "delay": "false",
+    "name": "Washington Dulles International",
+    "state": "District of Columbia",
+    "status": {
+        "avgDelay": "",
+        "closureBegin": "",
+        "closureEnd": "",
+        "endTime": "",
+        "maxDelay": "",
+        "minDelay": "",
+        "reason": "No known delays for this airport.",
+        "trend": "",
+        "type": ""
+    },
+    "weather": {
+        "meta": {
+            "credit": "NOAA's National Weather Service",
+            "updated": "11:52 PM Local",
+            "url": "http://weather.gov/"
+        },
+        "temp": "66.0 F (18.9 C)",
+        "visibility": 10.0,
+        "weather": "Light Rain and Breezy",
+        "wind": "Southwest at 23.0mph"
+    }
+}

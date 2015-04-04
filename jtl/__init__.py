@@ -53,6 +53,7 @@ functions = {
 }
 
 def parseTransform(transform):
+	#TODO: multi-level selectors
 	#TODO: more robust parsing
 	#TODO: handle arguments
 	return [token.strip() for token in transform.split('$')]
