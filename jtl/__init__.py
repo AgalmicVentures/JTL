@@ -153,12 +153,13 @@ def applyOperation(value, operation, args):
 
 	return function(value, *args)
 
-def parseArgument(argument):
-	#TODO: allow for names
+def parseArgument(argument, data):
 	try:
+		#Try loading as a constrant first
 		return json.loads(argument)
 	except ValueError:
-		return None
+		#If that fails, it might be a name
+		return extractPath(data, argument)
 
 def transform(data, transform):
 	#Parse the transformation into tokens
@@ -170,7 +171,7 @@ def transform(data, transform):
 	value = extractPath(data, primarySelector)
 	for section in tokens[1:]:
 		operation = section[0]
-		args = [parseArgument(argument) for argument in section[1:]]
+		args = [parseArgument(argument, data) for argument in section[1:]]
 		value = applyOperation(value, operation, args)
 
 	return value #TODO: transform it too
