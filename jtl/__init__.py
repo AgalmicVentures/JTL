@@ -48,13 +48,7 @@ functions = {
 	'isNull': lambda x: x is None,
 
 	'default': lambda x, y: x if x is not None else y, #TODO: parsing, rather than just always doing a string
-	'defaultEmptyDict': lambda x: x if x is not None else {},
-	'defaultEmptyList': lambda x: x if x is not None else [],
-	'defaultEmptyString': lambda x: x if x is not None else '',
-	'defaultFalse': lambda x: x if x is not None else False,
 	'defaultNan': lambda x: x if x is not None else float('nan'),
-	'defaultTrue': lambda x: x if x is not None else True,
-	'defaultZero': lambda x: x if x is not None else 0,
 
 	#Bool
 	'not': lambda x: not x if x is not None else None,
@@ -68,24 +62,29 @@ functions = {
 	'isNan': lambda x: math.isnan(x) if x is not None else None,
 
 	'ceil': lambda x: math.ceil(x) if x is not None else None,
+	'cos': lambda x: math.cos(x) if x is not None else None,
+	'cosh': lambda x: math.cosh(x) if x is not None else None,
 	'erf': lambda x: math.erf(x) if x is not None else None,
 	'exp': lambda x: math.exp(x) if x is not None else None,
 	'floor': lambda x: math.floor(x) if x is not None else None,
 	'lg': lambda x: math.log2(x) if x is not None else None,
 	'ln': lambda x: math.log(x) if x is not None else None,
 	'log': lambda x: math.log10(x) if x is not None else None,
+	'sin': lambda x: math.sin(x) if x is not None else None,
+	'sinh': lambda x: math.sinh(x) if x is not None else None,
 	'sqrt': lambda x: math.sqrt(x) if x is not None else None,
+	'tan': lambda x: math.tan(x) if x is not None else None,
+	'tanh': lambda x: math.tanh(x) if x is not None else None,
 
 	#Int
 
 	#Numer
-	'isZero': lambda x: x == 0 if x is not None else None,
-
 	'+': lambda x, y: x + y if x is not None and y is not None else None,
 	'-': lambda x, y: x - y if x is not None and y is not None else None,
 	'*': lambda x, y: x * y if x is not None and y is not None else None,
 	'/': lambda x, y: x / y if x is not None and y is not None else None,
 	'**': lambda x, y: x ** y if x is not None and y is not None else None,
+	'%': lambda x, y: x % y if x is not None and y is not None else None,
 
 	'==': lambda x, y: x == y if x is not None and y is not None else None,
 	'!=': lambda x, y: x != y if x is not None and y is not None else None,
@@ -113,15 +112,20 @@ functions = {
 	'min': lambda s: min(s) if s is not None else None,
 	'max': lambda s: max(s) if s is not None else None,
 
+	'count': lambda s, f: s.count(f) if s is not None and f is not None else None,
+
 	#String
 	'lower': lambda s: s.lower() if s is not None else None,
 	'upper': lambda s: s.upper() if s is not None else None,
 	'capitalize': lambda s: s.capitalize() if s is not None else None,
 
+	'find': lambda s, f: s.find(f) if s is not None and f is not None else None,
 	'strip': lambda s: s.strip() if s is not None else None,
+	'startsWith': lambda s, f: s.startswith(f) if s is not None and f is not None else None,
+	'endsWith': lambda s, f: s.endswith(f) if s is not None and f is not None else None,
 
 	'join': lambda s, *args: (args[0] if len(args) > 0 else '').join(s) if s is not None else None,
-	'split': lambda s, sp: s.split(sp) if s is not None else None,
+	'split': lambda s, sp: s.split(sp) if s is not None and sp is not None  else None,
 	'lines': lambda s: s.split('\n') if s is not None else None,
 	'unlines': lambda s: '\n'.join(s) if s is not None else None,
 	'words': lambda s: s.split(' ') if s is not None else None,
