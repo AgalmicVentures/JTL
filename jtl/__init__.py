@@ -34,6 +34,8 @@ functions = {
 	'toFloat': lambda x: toFloat(x),
 	'toInt': lambda x: toInt(x),
 
+	'abs': lambda x: abs(x) if x is not None else None,
+
 	#None
 	'isNull': lambda x: x is None,
 
@@ -109,6 +111,11 @@ def parseTransform(transform):
 def applyOperation(value, operation):
 	function = functions.get(operation)
 	if function is None:
+		#Is it a simple integer index?
+		index = toInt(operation)
+		if index is not None:
+			return value[index]
+
 		#TODO: error
 		return None
 
