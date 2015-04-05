@@ -106,7 +106,10 @@ functions = {
 def parseTransform(transform):
 	#TODO: more robust parsing
 	#TODO: handle arguments
-	return [token.strip() for token in transform.split('$')]
+	return [
+		[token for token in tokens.split(' ') if token != '']
+		for tokens in transform.split('$')
+	]
 
 def applyOperation(value, operation):
 	function = functions.get(operation)
@@ -127,9 +130,10 @@ def transform(data, transform):
 	if len(tokens) == 0:
 		return None
 
-	primarySelector = tokens[0]
+	primarySelector = tokens[0][0]
 	value = extractPath(data, primarySelector)
-	for operation in tokens[1:]:
+	for section in tokens[1:]:
+		operation = section[0]
 		value = applyOperation(value, operation)
 
 	return value #TODO: transform it too
