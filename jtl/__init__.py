@@ -27,18 +27,27 @@ def toInt(data):
 	except ValueError:
 		return None
 
+def toNumber(data):
+	intValue = toInt(data)
+	if intValue is not None:
+		return intValue
+
+	return toFloat(data)
+
 functions = {
 	#Any
-	'toString': lambda x: str(x),
-	'toBool': lambda x: toBool(x),
-	'toFloat': lambda x: toFloat(x),
-	'toInt': lambda x: toInt(x),
+	'toString': str,
+	'toBool': toBool,
+	'toFloat': toFloat,
+	'toInt': toInt,
+	'toNumber': toNumber,
 
 	'abs': lambda x: abs(x) if x is not None else None,
 
 	#None
 	'isNull': lambda x: x is None,
 
+	'default': lambda x, y: x if x is not None else y, #TODO: parsing, rather than just always doing a string
 	'defaultEmptyDict': lambda x: x if x is not None else {},
 	'defaultEmptyList': lambda x: x if x is not None else [],
 	'defaultEmptyString': lambda x: x if x is not None else '',
@@ -68,7 +77,22 @@ functions = {
 	'sqrt': lambda x: math.sqrt(x) if x is not None else None,
 
 	#Int
+
+	#Numer
 	'isZero': lambda x: x == 0 if x is not None else None,
+
+	'+': lambda x, y: x + y if x is not None and y is not None else None,
+	'-': lambda x, y: x - y if x is not None and y is not None else None,
+	'*': lambda x, y: x * y if x is not None and y is not None else None,
+	'/': lambda x, y: x / y if x is not None and y is not None else None,
+	'**': lambda x, y: x ** y if x is not None and y is not None else None,
+
+	'==': lambda x, y: x == y if x is not None and y is not None else None,
+	'!=': lambda x, y: x != y if x is not None and y is not None else None,
+	'<': lambda x, y: x < y if x is not None and y is not None else None,
+	'<=': lambda x, y: x <= y if x is not None and y is not None else None,
+	'>': lambda x, y: x > y if x is not None and y is not None else None,
+	'>=': lambda x, y: x >= y if x is not None and y is not None else None,
 
 	#Sequence
 	'length': lambda s: len(s) if s is not None else None,
@@ -96,7 +120,8 @@ functions = {
 
 	'strip': lambda s: s.strip() if s is not None else None,
 
-	'join': lambda s: ''.join(s) if s is not None else None,
+	'join': lambda s, *args: (args[0] if len(args) > 0 else '').join(s) if s is not None else None,
+	'split': lambda s, sp: s.split(sp) if s is not None else None,
 	'lines': lambda s: s.split('\n') if s is not None else None,
 	'unlines': lambda s: '\n'.join(s) if s is not None else None,
 	'words': lambda s: s.split(' ') if s is not None else None,
@@ -111,7 +136,7 @@ def parseTransform(transform):
 		for tokens in transform.split('$')
 	]
 
-def applyOperation(value, operation):
+def applyOperation(value, operation, args):
 	function = functions.get(operation)
 	if function is None:
 		#Is it a simple integer index?
@@ -122,7 +147,14 @@ def applyOperation(value, operation):
 		#TODO: error
 		return None
 
-	return function(value)
+	return function(value, *args)
+
+def parseArgument(argument):
+	#TODO: allow for names
+	try:
+		return json.loads(argument)
+	except ValueError:
+		return None
 
 def transform(data, transform):
 	#Parse the transformation into tokens
@@ -134,7 +166,8 @@ def transform(data, transform):
 	value = extractPath(data, primarySelector)
 	for section in tokens[1:]:
 		operation = section[0]
-		value = applyOperation(value, operation)
+		args = [parseArgument(argument) for argument in section[1:]]
+		value = applyOperation(value, operation, args)
 
 	return value #TODO: transform it too
 
