@@ -37,8 +37,12 @@ functions = {
 	#None
 	'isNull': lambda x: x is None,
 
-	'defaultEmpty': lambda x: x if x is not None else '',
+	'defaultEmptyDict': lambda x: x if x is not None else {},
+	'defaultEmptyList': lambda x: x if x is not None else [],
+	'defaultEmptyString': lambda x: x if x is not None else '',
+	'defaultFalse': lambda x: x if x is not None else False,
 	'defaultNan': lambda x: x if x is not None else float('nan'),
+	'defaultTrue': lambda x: x if x is not None else True,
 	'defaultZero': lambda x: x if x is not None else 0,
 
 	#Bool
@@ -49,27 +53,46 @@ functions = {
 	'values': lambda d: d.values() if d is not None else None,
 
 	#Float
+	'isFinite': lambda x: math.isfinite(x) if x is not None else None,
 	'isNan': lambda x: math.isnan(x) if x is not None else None,
+
+	'ceil': lambda x: math.ceil(x) if x is not None else None,
+	'erf': lambda x: math.erf(x) if x is not None else None,
+	'exp': lambda x: math.exp(x) if x is not None else None,
+	'floor': lambda x: math.floor(x) if x is not None else None,
+	'lg': lambda x: math.log2(x) if x is not None else None,
+	'ln': lambda x: math.log(x) if x is not None else None,
+	'log': lambda x: math.log10(x) if x is not None else None,
+	'sqrt': lambda x: math.sqrt(x) if x is not None else None,
 
 	#Int
 	'isZero': lambda x: x == 0 if x is not None else None,
 
 	#Sequence
-	'length': lambda s: len(s) if s is not None else 0,
+	'length': lambda s: len(s) if s is not None else None,
 
 	'first': lambda s: s[0] if s is not None and len(s) > 1 else None,
 	'rest': lambda s: s[1:] if s is not None and len(s) > 1 else None,
 	'last': lambda s: s[-1] if s is not None and len(s) > 1 else None,
 	'init': lambda s: s[:-1] if s is not None and len(s) > 1 else None,
 
-	'sum': lambda s: sum(s) if s is not None else 0,
+	'sorted': lambda s: list(sorted(s)) if s is not None else None,
+	'unique': lambda s: list(set(s)) if s is not None else None,
+
+	'sum': lambda s: sum(s) if s is not None else None,
+	#TODO: average
+	#TODO: stddev
+	#TODO: statistics
+
+	'min': lambda s: min(s) if s is not None else None,
+	'max': lambda s: max(s) if s is not None else None,
 
 	#String
-	'lower': lambda s: s.lower() if s is not None else 0,
-	'upper': lambda s: s.upper() if s is not None else 0,
-	'capitalize': lambda s: s.capitalize() if s is not None else 0,
+	'lower': lambda s: s.lower() if s is not None else None,
+	'upper': lambda s: s.upper() if s is not None else None,
+	'capitalize': lambda s: s.capitalize() if s is not None else None,
 
-	'strip': lambda s: s.strip() if s is not None else 0,
+	'strip': lambda s: s.strip() if s is not None else None,
 
 	'join': lambda s: ''.join(s) if s is not None else None,
 	'lines': lambda s: s.split('\n') if s is not None else None,
@@ -79,7 +102,6 @@ functions = {
 }
 
 def parseTransform(transform):
-	#TODO: multi-level selectors
 	#TODO: more robust parsing
 	#TODO: handle arguments
 	return [token.strip() for token in transform.split('$')]
