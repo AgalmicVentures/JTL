@@ -177,9 +177,14 @@ def transform(data, transform):
 	return value #TODO: transform it too
 
 def transformJson(data, transformData):
-	result = {}
-	for k, v in transformData.items():
-		result[k] = transform(data, v)
+	if type(transformData) is dict:
+		result = {}
+		for k, v in transformData.items():
+			result[k] = transformJson(data, v)
+	elif type(transformData) is str:
+		result = transform(data, transformData)
+	else:
+		result = None
 	return result
 
 def main():
