@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import base64
 import json
 import math
 import sys
@@ -148,6 +149,10 @@ def applyOperation(value, operation, args):
 		if index is not None:
 			return value[index]
 
+		#Or perhaps it's a selector function? .abc.def
+		if len(args) == 0 and operation[0] == '.':
+			return extractPath(value, operation[1:])
+
 		#TODO: error
 		return None
 
@@ -188,6 +193,10 @@ def transformJson(data, transformData):
 	return result
 
 def main():
+	if len(sys.argv) < 2:
+		print('Usage: jtl <TRANSFORM>')
+		return 0 #TODO: different code
+
 	#TODO: parse arguments properly
 	transformStr = sys.argv[1]
 	transformData = json.loads(transformStr)
