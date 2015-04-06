@@ -8,7 +8,7 @@ do
 
 	INPUT=tests/$TEST.json
 	TRANSFORM=`cat tests/$TEST.jtl`
-	OUTPUT=tests/$TEST.jtl
+	OUTPUT=tests/$TEST.result
 
-	cat $INPUT | ./jtl/__init__.py "$TRANSFORM"
+	diff $OUTPUT <(cat $INPUT | ./jtl/__init__.py "$TRANSFORM")
 done
