@@ -1,0 +1,4 @@
+{
+    "tempF": "weather.temp $ words $ first $ toFloat",
+    "tempC": "weather.temp $ words $ 2 $ rest $ toFloat"
+}
