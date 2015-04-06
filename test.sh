@@ -6,7 +6,7 @@ for TEST in $TESTS
 do
 	echo "********** $TEST **********"
 
-	INPUT=tests/$TEST.jsonw
+	INPUT=tests/$TEST.json
 	TRANSFORM=`cat tests/$TEST.jtl`
 	OUTPUT=tests/$TEST.jtl
 
