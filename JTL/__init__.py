@@ -9,6 +9,9 @@ import sys
 def maybe(f):
 	return lambda x: f(x) if x is not None else None
 
+def maybe2(f):
+	return lambda x, y: f(x, y) if x is not None and y is not None else None
+
 def extractPath(data, path):
 	splitPath = path.split('.')
 	return extractSplitPath(data, splitPath)
@@ -84,19 +87,19 @@ functions = {
 	#Int
 
 	#Numer
-	'+': lambda x, y: x + y if x is not None and y is not None else None,
-	'-': lambda x, y: x - y if x is not None and y is not None else None,
-	'*': lambda x, y: x * y if x is not None and y is not None else None,
-	'/': lambda x, y: x / y if x is not None and y is not None else None,
-	'**': lambda x, y: x ** y if x is not None and y is not None else None,
-	'%': lambda x, y: x % y if x is not None and y is not None else None,
+	'+': maybe2(lambda x, y: x + y),
+	'-': maybe2(lambda x, y: x - y),
+	'*': maybe2(lambda x, y: x * y),
+	'/': maybe2(lambda x, y: x / y),
+	'**': maybe2(lambda x, y: x ** y),
+	'%': maybe2(lambda x, y: x % y),
 
-	'==': lambda x, y: x == y if x is not None and y is not None else None,
-	'!=': lambda x, y: x != y if x is not None and y is not None else None,
-	'<': lambda x, y: x < y if x is not None and y is not None else None,
-	'<=': lambda x, y: x <= y if x is not None and y is not None else None,
-	'>': lambda x, y: x > y if x is not None and y is not None else None,
-	'>=': lambda x, y: x >= y if x is not None and y is not None else None,
+	'==': maybe2(lambda x, y: x == y),
+	'!=': maybe2(lambda x, y: x != y),
+	'<': maybe2(lambda x, y: x < y),
+	'<=': maybe2(lambda x, y: x <= y),
+	'>': maybe2(lambda x, y: x > y),
+	'>=': maybe2(lambda x, y: x >= y),
 
 	#Sequence
 	'length': maybe(len),
@@ -117,20 +120,20 @@ functions = {
 	'min': maybe(min),
 	'max': maybe(max),
 
-	'count': lambda s, f: s.count(f) if s is not None and f is not None else None,
+	'count': maybe2(lambda s, f: s.count(f)),
 
 	#String
 	'lower': maybe(lambda s: s.lower()),
 	'upper': maybe(lambda s: s.upper()),
 	'capitalize': maybe(lambda s: s.capitalize()),
 
-	'find': lambda s, f: s.find(f) if s is not None and f is not None else None,
+	'find': maybe2(lambda s, f: s.find(f)),
 	'strip': maybe(lambda s: s.strip()),
-	'startsWith': lambda s, f: s.startswith(f) if s is not None and f is not None else None,
-	'endsWith': lambda s, f: s.endswith(f) if s is not None and f is not None else None,
+	'startsWith': maybe2(lambda s, f: s.startswith(f)),
+	'endsWith': maybe2(lambda s, f: s.endswith(f)),
 
 	'join': lambda s, *args: (args[0] if len(args) > 0 else '').join(s) if s is not None else None,
-	'split': lambda s, sp: s.split(sp) if s is not None and sp is not None  else None,
+	'split': maybe2(lambda s, sp: s.split(sp)),
 	'lines': maybe(lambda s: s.split('\n')),
 	'unlines': maybe(lambda s: '\n'.join(s)),
 	'words': maybe(lambda s: s.split(' ')),
