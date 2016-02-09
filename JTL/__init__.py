@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import base64
 import json
 import math
@@ -196,13 +197,13 @@ def transformJson(data, transformData):
 	return result
 
 def main():
-	if len(sys.argv) < 2:
-		print('Usage: jtl <TRANSFORM>')
-		return 0 #TODO: different code
+	#Parse arguments
+	parser = argparse.ArgumentParser(description='JSON Transformation Language')
+	parser.add_argument('-i', '--indent', default=4, type=int, help='Indentation amount.')
+	parser.add_argument('transform', help='The transformation to run.')
 
-	#TODO: parse arguments properly
-	transformStr = sys.argv[1]
-	transformData = json.loads(transformStr)
+	arguments = parser.parse_args(sys.argv[1:])
+	transformData = json.loads(arguments.transform)
 
 	#Read the JSON in from stdin
 	#TODO: error handling
@@ -212,7 +213,7 @@ def main():
 	result = transformJson(data, transformData)
 
 	#Output the result
-	print(json.dumps(result, indent=4, sort_keys=True))
+	print(json.dumps(result, indent=arguments.indent, sort_keys=True))
 
 	return 0
 
