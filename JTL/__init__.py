@@ -71,8 +71,8 @@ functions = {
 	'not': maybe(lambda x: not x),
 
 	#Dict
-	'keys': maybe(lambda d: d.keys()),
-	'values': maybe(lambda d: d.values()),
+	'keys': maybe(lambda d: list(d.keys())),
+	'values': maybe(lambda d: list(d.values())),
 
 	#Float
 	'isFinite': maybe(lambda x: math.isfinite(x)),
@@ -135,9 +135,14 @@ functions = {
 	'lower': maybe(lambda s: s.lower()),
 	'upper': maybe(lambda s: s.upper()),
 	'capitalize': maybe(lambda s: s.capitalize()),
+	'swapCase': maybe(lambda s: s.swapcase()),
+
+	'strip': maybe(lambda s: s.strip()),
+	'lstrip': maybe(lambda s: s.lstrip()),
+	'rstrip': maybe(lambda s: s.rstrip()),
 
 	'find': maybe2(lambda s, f: s.find(f)),
-	'strip': maybe(lambda s: s.strip()),
+	'replace': maybe2(lambda s, f: s.replace(f)),
 	'startsWith': maybe2(lambda s, f: s.startswith(f)),
 	'endsWith': maybe2(lambda s, f: s.endswith(f)),
 
@@ -198,12 +203,16 @@ def transform(data, transform):
 
 	primarySelector = tokens[0][0]
 	value = extractPath(data, primarySelector)
-	for section in tokens[1:]:
+	for n, section in enumerate(tokens[1:]):
+		if len(section) == 0:
+			#n is the previous token
+			raise SyntaxError('missing operation after: %s' % (tokens[n][0]))
+
 		operation = section[0]
 		args = [parseArgument(argument, data) for argument in section[1:]]
 		value = applyOperation(value, operation, args)
 
-	return value #TODO: transform it too
+	return value
 
 def transformJson(data, transformData):
 	if type(transformData) is dict:
