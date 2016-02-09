@@ -13,12 +13,12 @@ transforming JSON values into other JSON values. The syntax of the language itse
         }
     }
 
-    > cat tests/faa1.json | ./jtl/__init__.py '{"tempF": "weather.temp"}'
+    > cat tests/faa1.json | ./JTL/__init__.py '{"tempF": "weather.temp"}'
     {
         "tempF": "66.0 F (18.9 C)"
     }
 
-    > cat tests/faa1.json | ./jtl/__init__.py '{"tempF": "weather.temp $ words"}'
+    > cat tests/faa1.json | ./JTL/__init__.py '{"tempF": "weather.temp $ words"}'
     {
         "tempF": [
             "66.0",
@@ -28,12 +28,12 @@ transforming JSON values into other JSON values. The syntax of the language itse
         ]
     }
 
-    > cat tests/faa1.json | ./jtl/__init__.py '{"tempF": "weather.temp $ words $ first"}'
+    > cat tests/faa1.json | ./JTL/__init__.py '{"tempF": "weather.temp $ words $ first"}'
     {
         "tempF": "66.0"
     }
 
-    > cat tests/faa1.json | ./jtl/__init__.py '{"tempF": "weather.temp $ words $ first $ toFloat"}'
+    > cat tests/faa1.json | ./JTL/__init__.py '{"tempF": "weather.temp $ words $ first $ toFloat"}'
     {
         "tempF": 66.0
     }
