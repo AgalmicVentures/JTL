@@ -2,6 +2,8 @@
 
 import argparse
 import base64
+import binascii
+import hashlib
 import json
 import math
 import sys
@@ -41,6 +43,13 @@ def toNumber(data):
 		return intValue
 
 	return toFloat(data)
+
+def hashFunction(hashConstructor):
+	def f(s):
+		h = hashConstructor()
+		h.update(s.encode('utf8', 'ignore'))
+		return binascii.hexlify(h.digest()).decode('utf8')
+	return f
 
 functions = {
 	#Any
@@ -138,11 +147,18 @@ functions = {
 	'unlines': maybe(lambda s: '\n'.join(s)),
 	'words': maybe(lambda s: s.split(' ')),
 	'unwords': maybe(lambda s: ' '.join(s)),
+
+	#Hashing
+	'md5': hashFunction(hashlib.md5),
+	'sha1': hashFunction(hashlib.sha1),
+	'sha224': hashFunction(hashlib.sha224),
+	'sha256': hashFunction(hashlib.sha256),
+	'sha384': hashFunction(hashlib.sha384),
+	'sha512': hashFunction(hashlib.sha512),
 }
 
 def parseTransform(transform):
 	#TODO: more robust parsing
-	#TODO: handle arguments
 	return [
 		[token for token in tokens.split(' ') if token != '']
 		for tokens in transform.split('$')
