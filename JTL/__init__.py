@@ -52,7 +52,7 @@ functions = {
 	#None
 	'isNull': lambda x: x is None,
 
-	'default': lambda x, y: x if x is not None else y, #TODO: parsing, rather than just always doing a string
+	'default': lambda x, y: x if x is not None else y,
 	'defaultNan': lambda x: x if x is not None else float('nan'),
 
 	#Bool
@@ -106,8 +106,8 @@ functions = {
 	'last': lambda s: s[-1] if s is not None and len(s) > 1 else None,
 	'init': lambda s: s[:-1] if s is not None and len(s) > 1 else None,
 
-	'sorted': lambda s: list(sorted(s)) if s is not None else None,
-	'unique': lambda s: list(set(s)) if s is not None else None,
+	'sorted': maybe(lambda s: list(sorted(s))),
+	'unique': maybe(lambda s: list(set(s))),
 
 	'sum': maybe(sum),
 	#TODO: average
@@ -157,14 +157,15 @@ def applyOperation(value, operation, args):
 		if len(args) == 0 and operation[0] == '.':
 			return extractPath(value, operation[1:])
 
-		#TODO: error
-		return None
+		#Nothing found -- error!
+		raise NameError(operation)
 
 	return function(value, *args)
 
 def parseArgument(argument, data):
 	try:
 		#Try loading as a constrant first
+		#TODO: strings are awkward and require escaping, so figure that out
 		return json.loads(argument)
 	except ValueError:
 		#If that fails, it might be a name
