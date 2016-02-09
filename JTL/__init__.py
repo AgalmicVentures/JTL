@@ -5,6 +5,9 @@ import json
 import math
 import sys
 
+def maybe(f):
+	return lambda x: f(x) if x is not None else None
+
 def extractPath(data, path):
 	splitPath = path.split('.')
 	return extractSplitPath(data, splitPath)
@@ -43,7 +46,7 @@ functions = {
 	'toInt': toInt,
 	'toNumber': toNumber,
 
-	'abs': lambda x: abs(x) if x is not None else None,
+	'abs': maybe(abs),
 
 	#None
 	'isNull': lambda x: x is None,
@@ -52,30 +55,30 @@ functions = {
 	'defaultNan': lambda x: x if x is not None else float('nan'),
 
 	#Bool
-	'not': lambda x: not x if x is not None else None,
+	'not': maybe(lambda x: not x),
 
 	#Dict
-	'keys': lambda d: d.keys() if d is not None else None,
-	'values': lambda d: d.values() if d is not None else None,
+	'keys': maybe(lambda d: d.keys()),
+	'values': maybe(lambda d: d.values()),
 
 	#Float
-	'isFinite': lambda x: math.isfinite(x) if x is not None else None,
-	'isNan': lambda x: math.isnan(x) if x is not None else None,
+	'isFinite': maybe(lambda x: math.isfinite(x)),
+	'isNan': maybe(lambda x: math.isnan(x)),
 
-	'ceil': lambda x: math.ceil(x) if x is not None else None,
-	'cos': lambda x: math.cos(x) if x is not None else None,
-	'cosh': lambda x: math.cosh(x) if x is not None else None,
-	'erf': lambda x: math.erf(x) if x is not None else None,
-	'exp': lambda x: math.exp(x) if x is not None else None,
-	'floor': lambda x: math.floor(x) if x is not None else None,
-	'lg': lambda x: math.log2(x) if x is not None else None,
-	'ln': lambda x: math.log(x) if x is not None else None,
-	'log': lambda x: math.log10(x) if x is not None else None,
-	'sin': lambda x: math.sin(x) if x is not None else None,
-	'sinh': lambda x: math.sinh(x) if x is not None else None,
-	'sqrt': lambda x: math.sqrt(x) if x is not None else None,
-	'tan': lambda x: math.tan(x) if x is not None else None,
-	'tanh': lambda x: math.tanh(x) if x is not None else None,
+	'ceil': maybe(lambda x: math.ceil(x)),
+	'cos': maybe(lambda x: math.cos(x)),
+	'cosh': maybe(lambda x: math.cosh(x)),
+	'erf': maybe(lambda x: math.erf(x)),
+	'exp': maybe(lambda x: math.exp(x)),
+	'floor': maybe(lambda x: math.floor(x)),
+	'lg': maybe(lambda x: math.log2(x)),
+	'ln': maybe(lambda x: math.log(x)),
+	'log': maybe(lambda x: math.log10(x)),
+	'sin': maybe(lambda x: math.sin(x)),
+	'sinh': maybe(lambda x: math.sinh(x)),
+	'sqrt': maybe(lambda x: math.sqrt(x)),
+	'tan': maybe(lambda x: math.tan(x)),
+	'tanh': maybe(lambda x: math.tanh(x)),
 
 	#Int
 
@@ -95,7 +98,7 @@ functions = {
 	'>=': lambda x, y: x >= y if x is not None and y is not None else None,
 
 	#Sequence
-	'length': lambda s: len(s) if s is not None else None,
+	'length': maybe(len),
 
 	'first': lambda s: s[0] if s is not None and len(s) > 1 else None,
 	'rest': lambda s: s[1:] if s is not None and len(s) > 1 else None,
@@ -105,32 +108,32 @@ functions = {
 	'sorted': lambda s: list(sorted(s)) if s is not None else None,
 	'unique': lambda s: list(set(s)) if s is not None else None,
 
-	'sum': lambda s: sum(s) if s is not None else None,
+	'sum': maybe(sum),
 	#TODO: average
 	#TODO: stddev
 	#TODO: statistics
 
-	'min': lambda s: min(s) if s is not None else None,
-	'max': lambda s: max(s) if s is not None else None,
+	'min': maybe(min),
+	'max': maybe(max),
 
 	'count': lambda s, f: s.count(f) if s is not None and f is not None else None,
 
 	#String
-	'lower': lambda s: s.lower() if s is not None else None,
-	'upper': lambda s: s.upper() if s is not None else None,
-	'capitalize': lambda s: s.capitalize() if s is not None else None,
+	'lower': maybe(lambda s: s.lower()),
+	'upper': maybe(lambda s: s.upper()),
+	'capitalize': maybe(lambda s: s.capitalize()),
 
 	'find': lambda s, f: s.find(f) if s is not None and f is not None else None,
-	'strip': lambda s: s.strip() if s is not None else None,
+	'strip': maybe(lambda s: s.strip()),
 	'startsWith': lambda s, f: s.startswith(f) if s is not None and f is not None else None,
 	'endsWith': lambda s, f: s.endswith(f) if s is not None and f is not None else None,
 
 	'join': lambda s, *args: (args[0] if len(args) > 0 else '').join(s) if s is not None else None,
 	'split': lambda s, sp: s.split(sp) if s is not None and sp is not None  else None,
-	'lines': lambda s: s.split('\n') if s is not None else None,
-	'unlines': lambda s: '\n'.join(s) if s is not None else None,
-	'words': lambda s: s.split(' ') if s is not None else None,
-	'unwords': lambda s: ' '.join(s) if s is not None else None,
+	'lines': maybe(lambda s: s.split('\n')),
+	'unlines': maybe(lambda s: '\n'.join(s)),
+	'words': maybe(lambda s: s.split(' ')),
+	'unwords': maybe(lambda s: ' '.join(s)),
 }
 
 def parseTransform(transform):
