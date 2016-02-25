@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+#TODO: split this file
+
 import argparse
 import base64
 import binascii
@@ -9,10 +11,7 @@ import math
 import sys
 
 def maybe(f):
-	return lambda x: f(x) if x is not None else None
-
-def maybe2(f):
-	return lambda x, y: f(x, y) if x is not None and y is not None else None
+	return lambda *args: f(*args) if None not in args else None
 
 def extractPath(data, path):
 	splitPath = path.split('.')
@@ -96,19 +95,19 @@ functions = {
 	#Int
 
 	#Numer
-	'+': maybe2(lambda x, y: x + y),
-	'-': maybe2(lambda x, y: x - y),
-	'*': maybe2(lambda x, y: x * y),
-	'/': maybe2(lambda x, y: x / y),
-	'**': maybe2(lambda x, y: x ** y),
-	'%': maybe2(lambda x, y: x % y),
+	'+': maybe(lambda x, y: x + y),
+	'-': maybe(lambda x, y: x - y),
+	'*': maybe(lambda x, y: x * y),
+	'/': maybe(lambda x, y: x / y),
+	'**': maybe(lambda x, y: x ** y),
+	'%': maybe(lambda x, y: x % y),
 
-	'==': maybe2(lambda x, y: x == y),
-	'!=': maybe2(lambda x, y: x != y),
-	'<': maybe2(lambda x, y: x < y),
-	'<=': maybe2(lambda x, y: x <= y),
-	'>': maybe2(lambda x, y: x > y),
-	'>=': maybe2(lambda x, y: x >= y),
+	'==': maybe(lambda x, y: x == y),
+	'!=': maybe(lambda x, y: x != y),
+	'<': maybe(lambda x, y: x < y),
+	'<=': maybe(lambda x, y: x <= y),
+	'>': maybe(lambda x, y: x > y),
+	'>=': maybe(lambda x, y: x >= y),
 
 	#Sequence
 	'length': maybe(len),
@@ -129,7 +128,7 @@ functions = {
 	'min': maybe(min),
 	'max': maybe(max),
 
-	'count': maybe2(lambda s, f: s.count(f)),
+	'count': maybe(lambda s, f: s.count(f)),
 
 	#String
 	'lower': maybe(lambda s: s.lower()),
@@ -141,13 +140,13 @@ functions = {
 	'lstrip': maybe(lambda s: s.lstrip()),
 	'rstrip': maybe(lambda s: s.rstrip()),
 
-	'find': maybe2(lambda s, f: s.find(f)),
-	'replace': maybe2(lambda s, f: s.replace(f)),
-	'startsWith': maybe2(lambda s, f: s.startswith(f)),
-	'endsWith': maybe2(lambda s, f: s.endswith(f)),
+	'find': maybe(lambda s, f: s.find(f)),
+	'replace': maybe(lambda s, f: s.replace(f)),
+	'startsWith': maybe(lambda s, f: s.startswith(f)),
+	'endsWith': maybe(lambda s, f: s.endswith(f)),
 
 	'join': lambda s, *args: (args[0] if len(args) > 0 else '').join(s) if s is not None else None,
-	'split': maybe2(lambda s, sp: s.split(sp)),
+	'split': maybe(lambda s, sp: s.split(sp)),
 	'lines': maybe(lambda s: s.split('\n')),
 	'unlines': maybe(lambda s: '\n'.join(s)),
 	'words': maybe(lambda s: s.split(' ')),
