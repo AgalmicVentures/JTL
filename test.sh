@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TESTS=faa1
+TESTS="faa1 test1"
 
 for TEST in $TESTS
 do

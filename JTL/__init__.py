@@ -64,6 +64,8 @@ def transformJson(data, transformData):
 		result = {}
 		for k, v in transformData.items():
 			result[k] = transformJson(data, v)
+	elif type(transformData) is list:
+		result = [transformJson(data, v) for v in transformData]
 	elif type(transformData) is str:
 		result = transform(data, transformData)
 	else:
