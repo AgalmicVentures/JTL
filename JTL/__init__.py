@@ -38,7 +38,7 @@ def parseArgument(argument, data):
 		return json.loads(argument)
 	except ValueError:
 		#If that fails, it might be a name
-		return extractPath(data, argument)
+		return Utility.extractPath(data, argument)
 
 def transform(data, transform):
 	#Parse the transformation into tokens

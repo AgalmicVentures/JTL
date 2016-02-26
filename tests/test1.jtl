@@ -1,4 +1,5 @@
 {
+	"calculation": "pi $ + number",
     "num": "pi",
 	"nums": ["pi", "number"]
 }
