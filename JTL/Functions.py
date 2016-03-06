@@ -15,11 +15,15 @@ def toFloat(data):
 		return float(data)
 	except ValueError:
 		return None
+	except TypeError:
+		return None
 
 def toInt(data):
 	try:
 		return int(data)
 	except ValueError:
+		return None
+	except TypeError:
 		return None
 
 def toNumber(data):
