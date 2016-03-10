@@ -1,6 +1,7 @@
 {
     "emptyPlusOne": null,
     "tempC": 18.9,
+    "tempCFloor": 18,
     "tempCPlusOne": 19.9,
     "tempF": 66.0
 }
