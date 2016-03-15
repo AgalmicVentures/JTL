@@ -126,7 +126,7 @@ maybeFunctions = {
 	'rstrip': lambda s: s.rstrip(),
 
 	'find': lambda s, f: s.find(f),
-	'replace': lambda s, f: s.replace(f),
+	'replace': lambda s, f, g: s.replace(f, g),
 	'startsWith': lambda s, f: s.startswith(f),
 	'endsWith': lambda s, f: s.endswith(f),
 
