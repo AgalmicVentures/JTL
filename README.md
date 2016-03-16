@@ -101,7 +101,7 @@ Converts the input value to a string.
 
 ### Bool
 
-### `not`
+#### `not`
 Inverts the boolean value.
 
 ### Dictionary
@@ -113,7 +113,7 @@ Returns the keys of the dictionary as a list.
 Returns the values of the dictionary as a list.
 
 ### Hashing
-JTL supports a variety of cryptographic hash functions: `md5`, `sha1`, `sha224`, `sha256`, `sha384`, `sha512`.
+JTL supports a variety of cryptographic hash functions: `md5`, `sha1`, `sha224`, `sha256`, `sha384`, `sha512`. In addition, [HMAC's](https://en.wikipedia.org/wiki/Hash-based_message_authentication_code) are supported for each of these hash types (e.g. `hmac_md5`).
 
 ### Math
 
