@@ -11,14 +11,25 @@ def parseTransform(transform):
 	:param transform: str
 	:return: [[str]]
 	"""
-	#TODO: more robust parsing
-	lexer = shlex.shlex(posix=False)
+	#Create a lexer with some slight tweaks
+	lexer = shlex.shlex(transform, posix=False)
+	lexer.wordchars += '.+-'
+
+	#Split into operations
 	operations = []
-	for operation in transform.split('$'):
-		lexer = shlex.shlex(operation, posix=False)
-		lexer.wordchars += '.+-'
-		tokens = list(lexer)
-		operations.append(tokens)
+	operation = []
+	for token in lexer:
+		#Split tokens on $
+		if token == '$':
+			operations.append(operation)
+			operation = []
+		else:
+			operation.append(token)
+
+	#Append any final operation
+	if operation != []:
+		operations.append(operation)
+
 	return operations
 
 def parseArgument(argument, data):
