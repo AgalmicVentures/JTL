@@ -151,12 +151,12 @@ def hashFunction(hashConstructor):
 	return f
 
 hashFunctions = {
-	'md5': hashFunction(hashlib.md5),
-	'sha1': hashFunction(hashlib.sha1),
-	'sha224': hashFunction(hashlib.sha224),
-	'sha256': hashFunction(hashlib.sha256),
-	'sha384': hashFunction(hashlib.sha384),
-	'sha512': hashFunction(hashlib.sha512),
+	'md5': hashlib.md5,
+	'sha1': hashlib.sha1,
+	'sha224': hashlib.sha224,
+	'sha256': hashlib.sha256,
+	'sha384': hashlib.sha384,
+	'sha512': hashlib.sha512,
 }
 
 for name in hashFunctions:
