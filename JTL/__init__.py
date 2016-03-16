@@ -5,20 +5,8 @@ import json
 import sys
 
 import Functions
+import Parser
 import Utility
-
-def parseTransform(transform):
-	"""
-	Parses a single JTL transform into tokens.
-
-	:param transform: str
-	:return: [[str]]
-	"""
-	#TODO: more robust parsing
-	return [
-		[token for token in tokens.split(' ') if token != '']
-		for tokens in transform.split('$')
-	]
 
 def applyOperation(value, operation, args):
 	"""
@@ -45,25 +33,9 @@ def applyOperation(value, operation, args):
 
 	return function(value, *args)
 
-def parseArgument(argument, data):
-	"""
-	Parses an argument to an operation.
-
-	:param argument: str from tokenization
-	:param data: dict of original data to extract more fields from
-	:return: a valid JSON value
-	"""
-	try:
-		#Try loading as a constrant first
-		#TODO: strings are awkward and require escaping, so figure that out
-		return json.loads(argument)
-	except ValueError:
-		#If that fails, it might be a name
-		return Utility.extractPath(data, argument)
-
 def transform(data, transform):
 	#Parse the transformation into tokens
-	tokens = parseTransform(transform)
+	tokens = Parser.parseTransform(transform)
 	if len(tokens) == 0:
 		return None
 
@@ -75,7 +47,7 @@ def transform(data, transform):
 			raise SyntaxError('missing operation after: %s' % (tokens[n][0]))
 
 		operation = section[0]
-		args = [parseArgument(argument, data) for argument in section[1:]]
+		args = [Parser.parseArgument(argument, data) for argument in section[1:]]
 		value = applyOperation(value, operation, args)
 
 	return value
