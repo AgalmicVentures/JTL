@@ -145,6 +145,12 @@ for name in maybeFunctions:
 ########## Hash Functions ##########
 
 def hashFunction(hashConstructor):
+	"""
+	Accepts the constructor of a hash algorithm and returns a function from a string to a hexified string digest.
+
+	:param hashConstructor: hashing algorithm (e.g. hashlib.md5)
+	:return: f(str)
+	"""
 	def f(s):
 		h = hashConstructor()
 		h.update(s.encode('utf8', 'ignore'))
@@ -152,6 +158,12 @@ def hashFunction(hashConstructor):
 	return f
 
 def hmacFunction(hashConstructor):
+	"""
+	Accepts the constructor of a hash algorithm and returns an HMAC function.
+
+	:param hashConstructor: hashing algorithm (e.g. hashlib.md5)
+	:return: hmac(str, key)
+	"""
 	def h(message, key):
 		return hmac.new(key=key.encode('utf8', 'ignore'), msg=message.encode('utf8', 'ignore'), digestmod=hashConstructor).hexdigest()
 	return h

@@ -8,6 +8,12 @@ import Functions
 import Utility
 
 def parseTransform(transform):
+	"""
+	Parses a single JTL transform into tokens.
+
+	:param transform: str
+	:return: [[str]]
+	"""
 	#TODO: more robust parsing
 	return [
 		[token for token in tokens.split(' ') if token != '']
@@ -15,6 +21,14 @@ def parseTransform(transform):
 	]
 
 def applyOperation(value, operation, args):
+	"""
+	Applies an operation to a value with some extra arguments.
+
+	:param value: a valid JSON value
+	:param operation: str name of the operation to apply (from the tokenizer)
+	:param args: [str] argument tokens
+	:return: a valid JSON value
+	"""
 	function = Functions.functions.get(operation)
 	if function is None:
 		#Is it a simple integer index?
@@ -32,6 +46,13 @@ def applyOperation(value, operation, args):
 	return function(value, *args)
 
 def parseArgument(argument, data):
+	"""
+	Parses an argument to an operation.
+
+	:param argument: str from tokenization
+	:param data: dict of original data to extract more fields from
+	:return: a valid JSON value
+	"""
 	try:
 		#Try loading as a constrant first
 		#TODO: strings are awkward and require escaping, so figure that out
@@ -60,6 +81,13 @@ def transform(data, transform):
 	return value
 
 def transformJson(data, transformData):
+	"""
+	Transforms some input data based on a transformation (transformData).
+
+	:param data: dict
+	:param transformData: dict | list | str
+	:return: dict
+	"""
 	if type(transformData) is dict:
 		result = {}
 		for k, v in transformData.items():
@@ -73,6 +101,12 @@ def transformJson(data, transformData):
 	return result
 
 def main():
+	"""
+	Runs the main JTL program.
+
+	:return: int
+	"""
+
 	#Parse arguments
 	parser = argparse.ArgumentParser(description='JSON Transformation Language')
 	parser.add_argument('-i', '--indent', default=4, type=int, help='Indentation amount.')
