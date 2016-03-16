@@ -27,8 +27,7 @@ def parseTransform(transform):
 			operation.append(token)
 
 	#Append any final operation
-	if operation != []:
-		operations.append(operation)
+	operations.append(operation)
 
 	return operations
 

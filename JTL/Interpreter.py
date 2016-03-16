@@ -3,7 +3,7 @@ import Functions
 import Parser
 import Utility
 
-def applyOperation(value, operation, args):
+def applyOperation(value, operation, args, location):
 	"""
 	Applies an operation to a value with some extra arguments.
 
@@ -24,15 +24,17 @@ def applyOperation(value, operation, args):
 			return Utility.extractPath(value, operation[1:])
 
 		#Nothing found -- error!
-		raise NameError(operation)
+		#TODO: set location
+		raise NameError('cannot find operation  %s  in "%s"' % (operation, location))
 
 	return function(value, *args)
 
-def transform(data, transform):
+def transform(data, transform, location):
 	"""
 	Computes one single transformation on some input data.
 
 	:param data: dict
+	:param key: str output key (used for error reporting)
 	:param transform: str JTL expression
 	:return: a valid JSON value
 	"""
@@ -46,15 +48,15 @@ def transform(data, transform):
 	for n, section in enumerate(tokens[1:]):
 		if len(section) == 0:
 			#n is the previous token
-			raise SyntaxError('missing operation after: %s' % (tokens[n][0]))
+			raise SyntaxError('missing final operation after  %s  in "%s"' % (tokens[n][0], location))
 
 		operation = section[0]
 		args = [Parser.parseArgument(argument, data) for argument in section[1:]]
-		value = applyOperation(value, operation, args)
+		value = applyOperation(value, operation, args, location)
 
 	return value
 
-def transformJson(data, transformData):
+def transformJson(data, transformData, location=''):
 	"""
 	Transforms some input data based on a transformation (transformData).
 
@@ -65,11 +67,11 @@ def transformJson(data, transformData):
 	if type(transformData) is dict:
 		result = {}
 		for k, v in transformData.items():
-			result[k] = transformJson(data, v)
+			result[k] = transformJson(data, v, '%s.%s' % (location, k))
 	elif type(transformData) is list:
-		result = [transformJson(data, v) for v in transformData]
+		result = [transformJson(data, v, '%s.%s' % (location, n)) for n, v in enumerate(transformData)]
 	elif type(transformData) is str:
-		result = transform(data, transformData)
+		result = transform(data, transformData, location)
 	else:
 		result = None
 	return result
