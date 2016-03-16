@@ -1,5 +1,6 @@
 
 import json
+import shlex
 
 import Utility
 
@@ -11,10 +12,14 @@ def parseTransform(transform):
 	:return: [[str]]
 	"""
 	#TODO: more robust parsing
-	return [
-		[token for token in tokens.split(' ') if token != '']
-		for tokens in transform.split('$')
-	]
+	lexer = shlex.shlex(posix=False)
+	operations = []
+	for operation in transform.split('$'):
+		lexer = shlex.shlex(operation, posix=False)
+		lexer.wordchars += '.+-'
+		tokens = list(lexer)
+		operations.append(tokens)
+	return operations
 
 def parseArgument(argument, data):
 	"""
