@@ -2,6 +2,7 @@
 import base64
 import binascii
 import hashlib
+import hmac
 import math
 
 ########## Basic Functions ##########
@@ -150,6 +151,11 @@ def hashFunction(hashConstructor):
 		return binascii.hexlify(h.digest()).decode('utf8')
 	return f
 
+def hmacFunction(hashConstructor):
+	def h(message, key):
+		return hmac.new(key=key.encode('utf8', 'ignore'), msg=message.encode('utf8', 'ignore'), digestmod=hashConstructor).hexdigest()
+	return h
+
 hashFunctions = {
 	'md5': hashlib.md5,
 	'sha1': hashlib.sha1,
@@ -162,3 +168,5 @@ hashFunctions = {
 for name in hashFunctions:
 	function = hashFunctions[name]
 	functions[name] = hashFunction(function)
+
+	functions['hmac_%s' % name] = hmacFunction(function)
