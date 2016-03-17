@@ -16,10 +16,23 @@ def main():
 	#Parse arguments
 	parser = argparse.ArgumentParser(description='JSON Transformation Language')
 	parser.add_argument('-i', '--indent', default=4, type=int, help='Indentation amount.')
-	parser.add_argument('transform', help='The transformation to run.')
-
+	parser.add_argument('-t', '--transform-file', help='The name of the JSON file containing the transformation to run.')
+	parser.add_argument('transform', nargs='?', help='The transformation to run.')
 	arguments = parser.parse_args(sys.argv[1:])
-	transformData = json.loads(arguments.transform)
+
+	#Load the transformation
+	if arguments.transform is None and arguments.transform_file is not None:
+		#From a file
+		with open(arguments.transform_file, 'r') as f:
+			transformStr = f.read()
+	elif arguments.transform is not None and arguments.transform_file is None:
+		#From the command line
+		transformStr = arguments.transform
+	else:
+		print('ERROR: Specify either a transform file or a transform')
+		return 1
+
+	transformData = json.loads(transformStr)
 
 	#Read the JSON in from stdin
 	#TODO: error handling

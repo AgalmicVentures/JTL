@@ -7,8 +7,7 @@ do
 	echo "********** $TEST **********"
 
 	INPUT=tests/$TEST.json
-	TRANSFORM=`cat tests/$TEST.jtl`
 	OUTPUT=tests/$TEST.result
 
-	diff $OUTPUT <(cat $INPUT | ./jtl/__init__.py "$TRANSFORM")
+	diff $OUTPUT <(cat $INPUT | ./jtl/__init__.py -t tests/$TEST.jtl)
 done
