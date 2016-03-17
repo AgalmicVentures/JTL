@@ -20,11 +20,13 @@ def applyOperation(value, operation, args, location):
 			return value[index]
 
 		#Or perhaps it's a selector function? .abc.def
-		if len(args) == 0 and operation[0] == '.':
-			return Utility.extractPath(value, operation[1:])
+		if operation[0] == '.':
+			if len(args) == 0:
+				return Utility.extractPath(value, operation[1:])
+			else:
+				raise SyntaxError('selector  %s  has arguments in "%s" (did you mean to do an operation?)' % (operation[0], location))
 
 		#Nothing found -- error!
-		#TODO: set location
 		raise NameError('cannot find operation  %s  in "%s"' % (operation, location))
 
 	return function(value, *args)
