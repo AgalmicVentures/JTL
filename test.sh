@@ -9,5 +9,5 @@ do
 	INPUT=tests/$TEST.json
 	OUTPUT=tests/$TEST.result
 
-	diff $OUTPUT <(cat $INPUT | ./jtl/__init__.py -t tests/$TEST.jtl)
+	diff $OUTPUT <(cat $INPUT | ./JTL/__init__.py -t tests/$TEST.jtl)
 done
