@@ -4,8 +4,6 @@ import argparse
 import json
 import sys
 
-import Interpreter
-
 def main():
 	"""
 	Runs the main JTL program.
@@ -39,6 +37,7 @@ def main():
 	data = json.loads(sys.stdin.read())
 
 	#Transform the JSON
+	import Interpreter
 	result = Interpreter.transformJson(data, transformData)
 
 	#Output the result
