@@ -4,7 +4,14 @@ before_script:
 stages:
   - test
 
-test_job:
+unit_test_job:
+  stage: test
+  script:
+    - python3 -m unittest discover
+  only:
+    - master
+
+functional_test_job:
   stage: test
   script:
     - ./test.sh
