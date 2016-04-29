@@ -37,6 +37,8 @@ def main():
 	data = json.loads(sys.stdin.read())
 
 	#Transform the JSON
+	#TODO: cleaner way to do this
+	sys.path.append('.')
 	import Interpreter
 	result = Interpreter.transformJson(data, transformData)
 

@@ -1,7 +1,7 @@
 
-import Functions
-import Parser
-import Utility
+from JTL import Functions
+from JTL import Parser
+from JTL import Utility
 
 def applyOperation(value, operation, args, location):
 	"""
@@ -31,7 +31,7 @@ def applyOperation(value, operation, args, location):
 
 	return function(value, *args)
 
-def transform(data, transform, location):
+def transform(data, transform, location=''):
 	"""
 	Computes one single transformation on some input data.
 
