@@ -27,6 +27,10 @@ def toInt(data):
 		return None
 
 def toNumber(data):
+	#TODO: figure out how to handle this cleanly (don't round floats)
+	if type(data) is float:
+		return data
+
 	intValue = toInt(data)
 	if intValue is not None:
 		return intValue
