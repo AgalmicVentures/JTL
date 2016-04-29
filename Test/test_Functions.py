@@ -6,16 +6,6 @@ from JTL import Functions
 
 class FunctionsTest(unittest.TestCase):
 
-	def setUp(self):
-		self._testData = {
-			'a': {
-				'X': 1,
-				'Y': 2,
-			},
-			'b': {'p': {'d': {'q': 'test'}}},
-			'c': 'asdf',
-		}
-
 	def test_toBool(self):
 		self.assertEqual(Functions.toBool('True'), True)
 		self.assertEqual(Functions.toBool('true'), True)

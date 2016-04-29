@@ -13,7 +13,7 @@ def parseTransform(transform):
 	"""
 	#Create a lexer with some slight tweaks
 	lexer = shlex.shlex(transform, posix=False)
-	lexer.wordchars += '.+-*'
+	lexer.wordchars += '.+-*=<>!'
 
 	#Split into operations
 	operations = []
