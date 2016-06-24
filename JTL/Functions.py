@@ -1,5 +1,4 @@
 
-import base64
 import binascii
 import hashlib
 import hmac
@@ -116,7 +115,7 @@ maybeFunctions = {
 	'length': len,
 	'max': max,
 	'min': min,
-	'sorted': lambda s: list(sorted(s)),
+	'sorted': lambda s: sorted(s),
 	'sum': sum,
 	'unique': lambda s: list(set(s)),
 
