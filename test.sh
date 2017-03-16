@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -u
+
 TESTS="faa1 test1"
 
 for TEST in $TESTS
